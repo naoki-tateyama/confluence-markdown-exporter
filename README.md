@@ -21,8 +21,8 @@
 - Converts Confluence macros to equivalent Markdown syntax where possible.
 - Handles images and attachments by linking them appropriately in the Markdown output.
 - Supports extended Markdown features like tasks, alerts, and front matter.
-- Supports incremental exports — only re-exports pages that have changed since the last run.
-- Supports Confluence add-ons: [draw.io](https://marketplace.atlassian.com/apps/1210933/draw-io-diagrams-uml-bpmn-aws-erd-flowcharts), [PlantUML](https://marketplace.atlassian.com/apps/1222993/flowchart-plantuml-diagrams-for-confluence)
+- Skips unchanged pages by default — only re-exports pages that have changed since the last run.
+- Supports Confluence add-ons: [draw.io](https://marketplace.atlassian.com/apps/1210933/draw-io-diagrams-uml-bpmn-aws-erd-flowcharts), [PlantUML](https://marketplace.atlassian.com/apps/1222993/flowchart-plantuml-diagrams-for-confluence), [Markdown Extensions](https://marketplace.atlassian.com/apps/1215703/markdown-extensions-for-confluence)
 
 ## Supported Markdown Elements
 
@@ -103,30 +103,6 @@ Export all Confluence pages across all spaces:
 confluence-markdown-exporter all-spaces <output path e.g. ./output_path/>
 ```
 
-#### 2.5. Incremental Export
-
-All export commands (`pages`, `pages-with-descendants`, `spaces`, `all-spaces`) support the `--incremental` flag. When enabled, only pages that have changed since the last export are re-exported:
-
-```sh
-confluence-markdown-exporter spaces <space-key> --incremental
-```
-
-This uses a lockfile to track previously exported pages and their versions, making subsequent exports significantly faster.
-
-#### 2.6. Prune Untracked Files
-
-After using incremental exports, you can clean up exported files that are no longer tracked in the lockfile (e.g. deleted pages):
-
-```sh
-confluence-markdown-exporter prune
-```
-
-Use `--dry-run` to preview which files would be deleted without actually deleting them:
-
-```sh
-confluence-markdown-exporter prune --dry-run
-```
-
 ### 3. Output
 
 The exported Markdown file(s) will be saved in the specified `output` directory e.g.:
@@ -174,12 +150,17 @@ This will open a menu where you can:
 | export.filename_encoding              | Character mapping for filename encoding.                                                                              | Default mappings for forbidden characters.                          |
 | export.filename_length                | Maximum length of filenames.                                                                                          | 255                                                                 |
 | export.include_document_title         | Whether to include the document title in the exported markdown file.                                                  | True                                                                |
+| export.skip_unchanged                 | Skip exporting pages that have not changed since last export. Uses a lockfile to track page versions.                 | True                                                                |
+| export.cleanup_stale                  | After export, delete local files for pages removed from Confluence or whose export path has changed.                  | True                                                                |
+| export.lockfile_name                  | Name of the lock file used to track exported pages.                                                                   | confluence-lock.json                                                |
+| export.existence_check_batch_size     | Number of page IDs per batch when checking page existence during cleanup. Capped at 25 for self-hosted (CQL).         | 250                                                                 |
 | connection_config.backoff_and_retry   | Enable automatic retry with exponential backoff                                                                       | True                                                                |
 | connection_config.backoff_factor      | Multiplier for exponential backoff                                                                                    | 2                                                                   |
 | connection_config.max_backoff_seconds | Maximum seconds to wait between retries                                                                               | 60                                                                  |
 | connection_config.max_backoff_retries | Maximum number of retry attempts                                                                                      | 5                                                                   |
 | connection_config.retry_status_codes  | HTTP status codes that trigger a retry                                                                                | \[413, 429, 502, 503, 504\]                                         |
 | connection_config.verify_ssl          | Whether to verify SSL certificates for HTTPS requests.                                                                | True                                                                |
+| connection_config.use_v2_api          | Enable Confluence REST API v2 endpoints. Supported on Atlassian Cloud and Data Center 8+. Disable for self-hosted Server instances. | False                                                    |
 | auth.confluence.url                   | Confluence instance URL                                                                                               | ""                                                                  |
 | auth.confluence.username              | Confluence username/email                                                                                             | ""                                                                  |
 | auth.confluence.api_token             | Confluence API token                                                                                                  | ""                                                                  |
