@@ -17,17 +17,22 @@
       }
     },
     {
-      "name": "Python: Export Page(s) by ID or URL",
+      "name": "Python: Export Page(s)",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/confluence_markdown_exporter/main.py",
       "justMyCode": false,
-      "args": ["pages", "<page-id> or <page-url>", "--output-path", "scratch"],
+      "args": [
+        "pages",
+        "<page-url>"
+      ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONPATH": "${workspaceRoot}",
-        "DEBUG": "true"
+        "CME_CONFIG_PATH": "scratch/cme_config.json",
+        "CME_EXPORT__LOG_LEVEL": "DEBUG",
+        "CME_EXPORT__OUTPUT_PATH": "scratch"
       }
     },
     {
@@ -36,12 +41,17 @@
       "request": "launch",
       "program": "${workspaceFolder}/confluence_markdown_exporter/main.py",
       "justMyCode": false,
-      "args": ["pages-with-descendants", "<page-id> or <page-url>", "--output-path", "scratch"],
+      "args": [
+        "pages-with-descendants",
+        "<page-url>"
+      ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONPATH": "${workspaceRoot}",
-        "DEBUG": "true"
+        "CME_CONFIG_PATH": "scratch/cme_config.json",
+        "CME_EXPORT__LOG_LEVEL": "DEBUG",
+        "CME_EXPORT__OUTPUT_PATH": "scratch"
       }
     },
     {
@@ -50,26 +60,36 @@
       "request": "launch",
       "program": "${workspaceFolder}/confluence_markdown_exporter/main.py",
       "justMyCode": false,
-      "args": ["spaces", "<space-key>", "--output-path", "scratch"],
+      "args": [
+        "spaces",
+        "<space-url>"
+      ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONPATH": "${workspaceRoot}",
-        "DEBUG": "true"
+        "CME_CONFIG_PATH": "scratch/cme_config.json",
+        "CME_EXPORT__LOG_LEVEL": "DEBUG",
+        "CME_EXPORT__OUTPUT_PATH": "scratch"
       }
     },
     {
-      "name": "Python: Export All Spaces",
+      "name": "Python: Export Org(s)",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/confluence_markdown_exporter/main.py",
       "justMyCode": false,
-      "args": ["all-spaces", "--output-path", "scratch"],
+      "args": [
+        "orgs",
+        "<base-url>"
+      ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONPATH": "${workspaceRoot}",
-        "DEBUG": "true"
+        "CME_CONFIG_PATH": "scratch/cme_config.json",
+        "CME_EXPORT__LOG_LEVEL": "DEBUG",
+        "CME_EXPORT__OUTPUT_PATH": "scratch"
       }
     },
     {
@@ -78,12 +98,15 @@
       "request": "launch",
       "program": "${workspaceFolder}/confluence_markdown_exporter/main.py",
       "justMyCode": false,
-      "args": ["config"],
+      "args": [
+        "config"
+      ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "env": {
         "PYTHONPATH": "${workspaceRoot}",
-        "DEBUG": "true"
+        "CME_CONFIG_PATH": "scratch/cme_config.json",
+        "CME_EXPORT__LOG_LEVEL": "DEBUG"
       }
     }
   ]
